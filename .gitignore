@@ -1,0 +1,6 @@
+server.log
+backend/history.db
+run_project.py
+__pycache__/
+node_modules/
+.env

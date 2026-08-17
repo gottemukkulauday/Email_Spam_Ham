@@ -1,0 +1,48 @@
+{
+  "uploaded_sources": [
+    {
+      "file": "meajor_cleaned_preprocessed.csv",
+      "rows": 108685,
+      "columns": [
+        "sender",
+        "sender_domain",
+        "receiver",
+        "receiver_domain",
+        "date",
+        "subject",
+        "content_types",
+        "body",
+        "urls",
+        "url_count",
+        "url_length_max",
+        "url_length_avg",
+        "url_subdom_max",
+        "url_subdom_avg",
+        "attachment_count",
+        "has_attachments",
+        "attachment_types",
+        "language",
+        "source",
+        "label"
+      ],
+      "role": "combined HAM+SPAM labeled dataset"
+    },
+    {
+      "file": "meajor_cleaned_preprocessed.parquet.gzip",
+      "rows": 108685,
+      "role": "same dataset in Parquet format; not a separate HAM or SPAM dataset"
+    }
+  ],
+  "label_mapping": {
+    "0": "HAM / NOT SPAM",
+    "1": "SPAM"
+  },
+  "quality": {
+    "raw_rows": 108685,
+    "missing_label_rows": 1,
+    "exact_duplicate_rows": 13,
+    "duplicate_subject_body_rows": 3751,
+    "training_rows_after_cleaning_and_deduplication": 104933
+  },
+  "note": "The two newly uploaded files were treated as two representations of the same combined labeled dataset, not as separate HAM and SPAM datasets. The application uses one canonical CSV.gz copy to avoid duplicating training records."
+}
