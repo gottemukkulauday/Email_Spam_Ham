@@ -1,9 +1,8 @@
 """
-Flask application entry point.
+Application configuration: file paths and environment overrides.
 
-Loads the dataset and database, registers all routes, and runs the
-development server. The analysis logic lives in the sibling modules
-(analyzer, features, model_service, dataset, db).
+Every path can be overridden with an environment variable so the app can be
+pointed at different datasets, models, or databases without code changes.
 """
 
 # ════════════════════════════════════════════════════════════════
@@ -11,37 +10,39 @@ development server. The analysis logic lives in the sibling modules
 # ════════════════════════════════════════════════════════════════
 
 import os
-from flask import Flask
-
-# Local imports
-import config
-import dataset
-import db
-from routes import register_routes
 
 # ════════════════════════════════════════════════════════════════
-# APPLICATION INITIALIZATION
+# PROJECT ROOT
 # ════════════════════════════════════════════════════════════════
 
-app = Flask(__name__, static_folder=config.FRONTEND_DIR, static_url_path='')
+# Project root: the parent of the backend/ directory
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ════════════════════════════════════════════════════════════════
-# STARTUP INITIALIZATION
+# DATA & MODEL PATHS
 # ════════════════════════════════════════════════════════════════
 
-# Load the email dataset
-dataset.load_dataset()
+# Dataset path (can be overridden with DATASET_PATH environment variable)
+DATASET_PATH = os.environ.get(
+    'DATASET_PATH',
+    os.path.join(ROOT, 'data', 'dataset.csv.gz')
+)
 
-# Initialize database and schema
-db.init_db()
+# Trained ML model path (can be overridden with MODEL_PATH environment variable)
+MODEL_PATH = os.environ.get(
+    'MODEL_PATH',
+    os.path.join(ROOT, 'backend', 'model', 'spam_pipeline.joblib')
+)
 
-# Register all HTTP routes
-register_routes(app)
+# SQLite database path (can be overridden with DB_PATH environment variable)
+DB_PATH = os.environ.get(
+    'DB_PATH',
+    os.path.join(ROOT, 'backend', 'history.db')
+)
 
 # ════════════════════════════════════════════════════════════════
-# MAIN ENTRY POINT
+# STATIC FILES
 # ════════════════════════════════════════════════════════════════
 
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+# Static files directory (vanilla-JS frontend served by Flask)
+FRONTEND_DIR = os.path.join(ROOT, 'frontend')
